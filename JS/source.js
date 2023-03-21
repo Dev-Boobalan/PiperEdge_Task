@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //reoerder the values
   function setItems1(prodVal) {
       prodVal['org_price'] = prodVal['price'];
-      prodVal['discounted_price'] = (prodVal['price'] - ((prodVal['discount']/100)*prodVal['price']));
+      prodVal['discounted_price'] = (prodVal['price'] - ((prodVal['Newdiscount']/100)*prodVal['price']));
       delete prodVal.tags;
       let cartItems = prodVal;
       localStorage.setItem('productsInCart', JSON.stringify(cartItems));
@@ -289,7 +289,7 @@ function shoppingCart() {
     let td3 = document.createElement("td")
     td3.textContent = `${item.org_price}`;
     let td4 = document.createElement("td")
-    td4.textContent = `${item.discount}`;
+    td4.textContent = `${item.Newdiscount}`;
     let td5 = document.createElement("td")
     td5.className = 'Final_price'
     td5.textContent = `${item.discounted_price}`;
@@ -301,6 +301,7 @@ function shoppingCart() {
     divOne.append(td1, td2, td3, td4, td5, td6, td7);
     let shopCart = document.querySelector(".shop_table_body");
     shopCart.append(divOne);
+    changerIdOrder()
   })
 }
 //FUnction for removing cart
@@ -368,3 +369,43 @@ function changerIdOrder(){
     }
   }
 }
+
+//discount table
+function discountValue() {
+  for (let d = 0; d < prodVal.length; d++) {
+    let discTable = document.querySelector('.disc_table');
+  let TradeValues = discTable.rows
+  for (let k = 0; k < TradeValues.length; k++) {
+    let TradeValue = TradeValues[k].cells[0].innerText;
+    if (TradeValue == prodVal[d].vendor ) {
+      let vendorValues = discTable.rows;
+      // console.log(vendorValues);
+        for (let o = 0; o < vendorValues.length; o++) {
+          let vendorValue = vendorValues[o].cells;
+          for (let p = 0; p < vendorValue.length; p++) {
+            let vendorVal = vendorValue[p].innerText;
+            // console.log(vendorVal);
+          if (vendorVal == prodVal[d].tags[0] ){
+              let totalValue = discTable.rows[k].cells[p].innerText;
+              if (totalValue == 'N/A') {
+                prodVal[d].Newdiscount = 0
+                console.log(prodVal[d]);  
+              }
+              else{
+                prodVal[d].Newdiscount = totalValue
+                console.log(prodVal[d])
+  
+              }
+            }   
+          }
+                   
+        }
+        
+    }
+
+  }
+    
+  }
+  
+}
+discountValue();
